@@ -10,6 +10,8 @@ from agentorg.orchestrator.NLU.nlu import SlotFilling
 from agentorg.utils.utils import format_chat_history
 
 
+TOOL_REGISTRY = {}
+
 logger = logging.getLogger(__name__)
 
     
@@ -21,7 +23,11 @@ def register_tool(desc, slots=[], outputs=[]):
         # reformat the relative path to replace / with -, and remove .py, because the function calling in openai only allow the function name match the patter the pattern '^[a-zA-Z0-9_-]+$'
         relative_path = relative_path.replace("/", "-").replace(".py", "")
         key = f"{relative_path}-{func.__name__}"
+
+        """Decorator to register a worker."""
         tool = lambda : Tool(func, key, desc, slots, outputs)
+        TOOL_REGISTRY[key] = tool
+
         return tool
     return inner
 

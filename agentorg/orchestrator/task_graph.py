@@ -136,7 +136,6 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"intent in _get_node: {intent}")
         candidates_intents = collections.defaultdict(list)
         worker_name = self.graph.nodes[sample_node]["name"]
-        id = self.graph.nodes[sample_node]["id"]
         available_nodes[sample_node]["limit"] -= 1
         if intent and available_nodes[sample_node]["limit"] <= 0 and intent in available_intents:
             # delete the corresponding node item from the intent list
@@ -154,7 +153,7 @@ class TaskGraph(TaskGraphBase):
         # if skip:
         #     node_info = {"name": None, "attribute": None}
         # else:
-        node_info = {"id": id, "name": worker_name, "attribute": self.graph.nodes[sample_node]["attribute"]}
+        node_info = {"name": worker_name, "attribute": self.graph.nodes[sample_node]["attribute"]}
         
         return node_info, params, candidates_intents
 
@@ -209,7 +208,7 @@ class TaskGraph(TaskGraphBase):
         node_status = params.get("node_status", {})
         status = node_status.get(curr_node, StatusEnum.COMPLETE.value)
         if status == StatusEnum.INCOMPLETE.value:
-            node_info = {"id": self.graph.nodes[curr_node]["id"], "name": self.graph.nodes[curr_node]["name"], "attribute": self.graph.nodes[curr_node]["attribute"]}
+            node_info = {"name": self.graph.nodes[curr_node]["name"], "attribute": self.graph.nodes[curr_node]["attribute"]}
             return node_info, params
             
 
@@ -429,7 +428,7 @@ class TaskGraph(TaskGraphBase):
             nlu_records.append({"candidate_intents": [], "pred_intent": "", "no_intent": True, "global_intent": False})
         params["nlu_records"] = nlu_records
         params["curr_node"] = curr_node
-        node_info = {"id": self.graph.nodes[curr_node]["id"], "name": self.graph.nodes[curr_node]["name"], "attribute": {"value": "", "direct": self.graph.nodes[curr_node].get("direct", False)}}
+        node_info = {"name": self.graph.nodes[curr_node]["name"], "attribute": {"value": "", "direct": self.graph.nodes[curr_node].get("direct", False)}}
         
         return node_info, params
 

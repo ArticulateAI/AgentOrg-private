@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from agentorg.utils.graph_state import MessageState
 
+WORKER_REGISTRY = {}
 
 def register_worker(cls):
     """Decorator to register a worker."""
     cls.name = cls.__name__  # Automatically set name to the class name
+    WORKER_REGISTRY[cls.__name__] = cls  # Register the class
     return cls
 
 

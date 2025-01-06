@@ -14,11 +14,11 @@ import shopify
 
 from agentorg.utils.utils import init_logger
 from agentorg.orchestrator.orchestrator import AgentOrg
-# from create import API_PORT
+from create import API_PORT
 from agentorg.utils.model_config import MODEL
 from agentorg.env.env import Env
 
-API_PORT = "55135"
+
 load_dotenv()
 # session = shopify.Session(os.environ["SHOPIFY_SHOP_URL"], os.environ["SHOPIFY_API_VERSION"], os.environ["SHOPIFY_ACCESS_TOKEN"])
 # shopify.ShopifyResource.activate_session(session)

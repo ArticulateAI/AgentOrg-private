@@ -16,8 +16,7 @@
         [
             "1",
             {
-                "id": "ddbe6adc-cd0e-40bc-8a95-91cb69ed807b",
-                "name": "find_user_id_by_email",
+                "name": "shopify-find_user_id_by_email-find_user_id_by_email",
                 "attribute": {
                     "value": "",
                     "task": "Find user id by email",
@@ -29,7 +28,6 @@
         [
             "2",
             {
-                "id": "0",
                 "name": "Planner",
                 "attribute": {
                     "value": "",
@@ -42,8 +40,7 @@
         [
             "3",
             {
-                "id": "2a2750cb-6226-4068-ba05-a4db83da3e16",
-                "name": "get_order_details",
+                "name": "shopify-get_order_details-get_order_details",
                 "attribute": {
                     "value": "",
                     "task": "Get the product id for each order",
@@ -55,8 +52,7 @@
         [
             "4",
             {
-                "id": "22fae76f-085c-4098-9011-2ae1e1eb8dc3",
-                "name": "get_product_details",
+                "name": "shopify-get_product_details-get_product_details",
                 "attribute": {
                     "value": "",
                     "task": "Get the product information",
@@ -68,8 +64,7 @@
         [
             "5",
             {
-                "id": "40f05456-525c-4d9d-ac37-54482d6b220b",
-                "name": "FaissRAGWorker",
+                "name": "RAGWorker",
                 "attribute": {
                     "value": "",
                     "task": "Answer user's question about product",
@@ -157,13 +152,13 @@
     ],
     "tasks": [],
     "tools": [
-        {"id": "ddbe6adc-cd0e-40bc-8a95-91cb69ed807b", "name": "find_user_id_by_email", "path": "shopify/find_user_id_by_email.py", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
-        {"id": "b9dbef8b-8219-4e0a-a50d-3b01614e5443", "name": "get_user_details", "path": "shopify/get_user_details.py", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
-        {"id": "2a2750cb-6226-4068-ba05-a4db83da3e16", "name": "get_order_details", "path": "shopify/get_order_details.py", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
-        {"id": "22fae76f-085c-4098-9011-2ae1e1eb8dc3", "name": "get_product_details", "path": "shopify/get_product_details.py", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}}
+        {"name": "shopify-find_user_id_by_email-find_user_id_by_email", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
+        {"name": "shopify-get_user_details-get_user_details", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
+        {"name": "shopify-get_order_details-get_order_details", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
+        {"name": "shopify-get_product_details-get_product_details", "fixed_args": {"token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}}
     ],
     "workers": [
-        {"id": "40f05456-525c-4d9d-ac37-54482d6b220b", "name": "FaissRAGWorker", "path": "faiss_rag_worker.py"}
+        "RAGWorker"
     ],
     "nluapi": "http://localhost:55135/nlu/predict",
     "slotfillapi": "http://localhost:55135/slotfill/predict"

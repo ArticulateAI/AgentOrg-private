@@ -3,7 +3,6 @@ import os
 import json
 from typing import Any, Dict, List
 from pydantic import BaseModel
-import traceback
 
 from litellm import completion
 
@@ -28,12 +27,10 @@ class FunctionCallingPlanner:
     description = "Default worker decided by chat records if there is no specific worker for the user's query"
 
     def __init__(self,
-        tools_map: Dict[str, Any],
-        name2id: Dict[str, int]):
+        tools_map: Dict[str, Any]):
         super().__init__()
         self.tools_map = tools_map
         self.tools_info = [tool["execute"]().info for tool in self.tools_map.values()]
-        self.name2id = name2id
 
     def message_to_actions(
         self,
@@ -107,17 +104,15 @@ class FunctionCallingPlanner:
         if action.name == RESPOND_ACTION_NAME:
             response = action.kwargs["content"]
             observation = response
-        elif self.name2id[action.name] in self.tools_map:
+        elif action.name in self.tools_map:
             try:
-                calling_tool = self.tools_map[self.name2id[action.name]]
                 kwargs = action.kwargs
-                combined_kwargs = {**kwargs, **calling_tool["fixed_args"]}
-                observation = calling_tool["execute"]().func(**combined_kwargs)
+                combined_kwargs = {**kwargs, **self.tools_map[action.name]["fixed_args"]}
+                observation = self.tools_map[action.name]["execute"]().func(**combined_kwargs)
                 if not isinstance(observation, str):
                     # Convert to string if not already
                     observation = str(observation)
             except Exception as e:
-                logger.error(traceback.format_exc())
                 observation = f"Error: {e}"
         else:
             observation = f"Unknown action {action.name}"

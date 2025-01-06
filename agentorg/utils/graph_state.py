@@ -9,7 +9,7 @@ class BotConfig(BaseModel):
     version: str
     language: str
     bot_type: str
-    available_workers: list[dict[str, str]]
+    available_workers: list[str]
 
 
 ### Message-related classes

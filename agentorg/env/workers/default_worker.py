@@ -5,7 +5,7 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 
-from agentorg.env.workers.worker import BaseWorker, register_worker
+from agentorg.env.workers.worker import BaseWorker, register_worker, WORKER_REGISTRY
 from agentorg.env.prompts import load_prompts
 from agentorg.utils.utils import chunk_string
 from agentorg.utils.graph_state import MessageState
@@ -29,7 +29,7 @@ class DefaultWorker(BaseWorker):
         user_message = state['user_message']
         task = state["orchestrator_message"].attribute.get("task", "")
         available_workers = state['bot_config'].available_workers
-        self.available_workers = {name: state["metadata"]["worker"][name].description for name in available_workers if name != "DefaultWorker"}
+        self.available_workers = {name: WORKER_REGISTRY[name].description for name in available_workers if name != "DefaultWorker"}
         workers_info = "\n".join([f"{name}: {description}" for name, description in self.available_workers.items()])
         workers_name = ", ".join(self.available_workers.keys())
 

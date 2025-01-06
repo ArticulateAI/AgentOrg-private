@@ -14,8 +14,6 @@ from langchain_openai.chat_models import ChatOpenAI
 from agentorg.env.prompts import load_prompts
 from agentorg.utils.mysql import mysql_pool
 from agentorg.utils.model_config import MODEL
-from agentorg.env.prompts import load_prompts
-from agentorg.utils.graph_state import MessageState
 from agentorg.env.tools.RAG.retrievers.retriever_document import RetrieverDocument, RetrieverDocumentType, RetrieverResult, embed, embed_retriever_document
 
 EMBED_DIMENSION = 1536
@@ -25,20 +23,6 @@ CHUNK_NEIGHBOURS = 3
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
-class RetrieveEngine():
-    @staticmethod
-    def milvus_retrieve(state: MessageState):
-        # get the input message
-        user_message = state['user_message']
-
-        # Search for the relevant documents
-        milvus_retriever = MilvusRetrieverExecutor(state["bot_config"])
-        retrieved_text, retriever_params = milvus_retriever.retrieve(user_message.history)
-
-        state["message_flow"] = retrieved_text
-        state["metadata"]["tool_response"] = retriever_params
-        return state
 
 class MilvusRetriever:
     def __enter__(self):

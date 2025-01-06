@@ -11,25 +11,9 @@ from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import OpenAIEmbeddings
 
 from agentorg.utils.model_config import MODEL
-from agentorg.env.prompts import load_prompts
-from agentorg.utils.graph_state import MessageState
 
 
 logger = logging.getLogger(__name__)
-
-class RetrieveEngine():
-    @staticmethod
-    def faiss_retrieve(state: MessageState):
-        # get the input message
-        user_message = state['user_message']
-
-        # Search for the relevant documents
-        prompts = load_prompts(state["bot_config"])
-        docs = FaissRetrieverExecutor.load_docs(database_path=os.environ.get("DATA_DIR"))
-        retrieved_text = docs.search(user_message.history, prompts["retrieve_contextualize_q_prompt"])
-
-        state["message_flow"] = retrieved_text
-        return state
 
 
 class FaissRetrieverExecutor:
