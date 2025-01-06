@@ -1,0 +1,30 @@
+{
+    "nodes": [
+        [
+            "0",
+            {
+                "name": ":calculator",
+                "attribute": {
+                    "value": "Hello I am a calculator, how may I calculate?",
+                    "task": "start message",
+                    "directed": false
+                },
+                "limit": 1,
+                "type": "start"
+            }
+        ]
+    ],
+    "edges": [],
+    "role": "calculator",
+    "user_objective": "Assistant calculates",
+    "builder_objective": "",
+    "domain": "calculator",
+    "intro": "Calculates",
+    "task_docs": [],
+    "rag_docs": [],
+    "tasks": [],
+    "workers": [],
+    "tools": ["calculator"],
+    "nluapi": "http://localhost:55135/nlu/predict",
+    "slotfillapi": "http://localhost:55135/slotfill/predict"
+}

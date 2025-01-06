@@ -1,0 +1,10 @@
+# Introduction
+Agent First Organization provides a framework for developing **task-oriented dialogue agents** to complete complex tasks powered by LLMs. The framework is designed to be modular and extensible, allowing developers to customize workers that can interact with each other in a variety of ways under the supervision of the orchestrator managed by *Taskgraph*. The framework is built on top of the [LangChain](https://www.langchain.com/) platform, which provides a flexible LangGraph framework and LangChain Expression Language (LCEL) to chain different module together.
+
+In this framework, we propose opportunities for innovation across **four** key areas: 
+* **<span style={{ color: 'orange' }}>Mixed control:</span>** The workers are designed to handle different goals from user needs and builder objectives, ensuring more dynamic and goal-driven interactions. Use [Config](Config.md) to specify different goals and constraints.
+* **<span style={{ color: 'orange' }}>Task Composition:</span>** The complex real-world tasks are proposed to be broken down into modular, reusable components handled by each worker, enhancing efficiency and scalability. The [Taskgraph](Taskgraph/intro.md) is used to handle the task composition.
+* **<span style={{ color: 'orange' }}>Human Intervention:</span>** Integrates human oversight and interactive refinement, ensuring critical decisions are accurate and user preferences are prioritized. Customize [Worker](Workers/intro.md) to incorporate human intervention.
+* **<span style={{ color: 'orange' }}>Continual Learning:</span>** The workers evolve and improve over time by learning from interactions, maintaining their relevance and effectiveness in dynamic environments. The [Evaluation](Evaluation/intro.md) will be used to analyze the performance and further improve the *Taskgraph* and *Workers*.
+
+They focus on improving worker's controllability, reliability, and transparency, fostering a new generation of AI Agents capable of dynamic collaboration and self-improvement.

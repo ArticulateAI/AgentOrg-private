@@ -1,0 +1,498 @@
+{
+    "Need Recognition": {
+        "Information Seeking": {
+            "Product Info": [
+                "What type of products do you provide?",
+                "Please give me a list of products I can buy from this platform?",
+                "Guide me through your website.",
+                "Can you tell me about the range of products available on your store?",
+                "What kind of items can I shop for on your platform?",
+                "Could you provide an overview of product categories offered by your store?",
+                "What are some examples of products sold here?",
+                "Can you list the different types of goods I can purchase?",
+                "What does your store offer in terms of product variety?",
+                "How diverse is the selection of products on this website?",
+                "Could you guide me through the available product categories?",
+                "What shopping options do I have on your store?",
+                "Can you show me the types of merchandise I can find here?"
+            ],
+            "Brand Info": [
+                "The history about your store",
+                "What's your value proposition?",
+                "How well your store performs in the market? Like stock price, news, etc.",
+                "What is your store's mission statement?",
+                "Can you tell me about your store's core values?",
+                "When was your store founded and who was the founder?",
+                "What is your store's approach to sustainability?",
+                "How has your store's brand evolved over the years?",
+                "What are some notable achievements in your store's history?",
+                "In what ways does your store support its local communities?",
+                "What is the vision that drives your store's innovation?",
+                "Can you provide an overview of your store's corporate social responsibility initiatives?",
+                "How does your store's culture reflect its brand values?"
+            ]
+        },
+        "Engagement": {
+            "Social Media Interaction": [
+                "I saw the post on IG about the stanley mug. I want to buy it!",
+                "I recently saw the video about your store delivery service on Youtube, I want to learn more.",
+                "My friends share with the product bought on your platform, I want to try it out as well.",
+                "I stumbled across a Facebook post about your store's discounts, how do I find these deals?",
+                "I noticed a tweet mentioning your store Prime benefits, can someone explain more about it?",
+                "Saw a TikTok review about an your store beauty product, I'm interested in purchasing it.",
+                "A friend tagged me in a post about your store's book recommendations, how do I check them out?",
+                "I saw the trending hashtag about your store home goods on Instagram, where can I explore these products?",
+                "I just watched a YouTube video featuring your store's new tech gadgets, how do I buy them?",
+                "My colleague shared a LinkedIn article on your store's work culture, any insights?",
+                "I came across a Reddit discussion about unusual finds on your store, how do I search for these?",
+                "There was an Instagram story about your store's holiday sales, how do I access them?",
+                "I saw a Pin on Pinterest with an your store gift guide, where do I find these items?"
+            ],
+            "Ad Clicks": [
+                "What does that Halloween Deals ads means?",
+                "what's your current promotions/deals?",
+                "What's your most successful marketing campaign?",
+                "What are the top trending ads on your store today?",
+                "Can you tell me more about that flash sale banner?",
+                "What does this holiday shopping ad offer?",
+                "How do I find information on the latest tech gadget ads?",
+                "What promotions are currently being advertised?",
+                "Could you explain the benefits of the current ad campaign?",
+                "What's the discount rate for items in the clearance sale ad?",
+                "Is there any special offer I should know about from the displayed ads?",
+                "How do I get details on that fitness products promotion I'm seeing?",
+                "What are the top categories being advertised right now?"
+            ]
+        }
+    },
+    "Information Search": {
+        "Product Search and Discovery": {
+            "Search by Keywords": [
+                "I want to buy shampoo",
+                "Do you have recommendations on hand mixer?",
+                "sofa bed",
+                "laptop under $500",
+                "best wireless headphones",
+                "organic face moisturizer for sensitive skin",
+                "waterproof hiking boots",
+                "pet hair vacuum cleaner",
+                "energy-efficient washing machine",
+                "ergonomic office chair",
+                "compact digital camera",
+                "noise-canceling earbuds",
+                "non-stick frying pan set"
+            ],
+            "Filter and Sort Options": [
+                "Is there any shampoo that's good for oily hair especially for Men?",
+                "I want a red hand mixer that's under 30 dollars rate higher than 4.0",
+                "sofa bed that can be extended to full bed at least, king size is even better",
+                "Show me children's books priced under 10 dollars with a rating of 4 stars or higher.",
+                "I'm looking for a laptop with an Intel i7 processor that costs less than $1000.",
+                "Find me a pair of running shoes in size 9 with more than 300 reviews.",
+                "Can you show products sorted by customer review scores in the electronics section?",
+                "Which air fryers are available under 100 dollars that offer free shipping?",
+                "I need a waterproof smartwatch with a battery life of at least 7 days and sorted by popularity.",
+                "Display kitchen blenders priced between $50 and $100 and rated 4 stars or above.",
+                "Search for women's jackets that are discounted by at least 20% and available in medium size.",
+                "Find Bluetooth headphones under 50 dollars with noise-cancellation features.",
+                "Show me coffee makers that can brew espresso and have been reviewed by at least 50 people."
+            ],
+            "Category Browsing": [
+                "I just rent a new house, I want to buy stuff for my kitchen.",
+                "I'm exploring the bed options",
+                "The gifts suggestions for men",
+                "What are the latest gadgets available in the electronics section?",
+                "I need to find some workout essentials, what does your store offer?",
+                "Can you show me the best-selling skincare products right now?",
+                "Where can I browse for new arrivals in women's clothing?",
+                "I'm looking for children's toys. What categories do you have?",
+                "What are the current offers on home decor items?",
+                "Could you suggest some top-rated books for mystery lovers?",
+                "I'm interested in gardening supplies. What options are available?",
+                "What categories should I explore for camping gear?",
+                "Where can I find luxury watches for men on your store?"
+            ],
+            "Personalized Recommendations": [
+                "If there is any new products coming out for my favorite floss brand",
+                "Is there any other shampoo suitable for my hair type",
+                "I bought lots of kitchen stuff in 2022, is there any missing?",
+                "Can you suggest some new sci-fi books similar to the ones I've read?",
+                "Are there any accessories recommended for my recently purchased camera?",
+                "What new recipes can I try using my favorite cooking appliance?",
+                "Based on my recent clothing purchases, what outfits do you recommend?",
+                "Are there any new skincare products I should consider for my sensitive skin?",
+                "Do you have suggestions for camping gear since I've shown interest in hiking?",
+                "Can you recommend electronics upgrades for my home office setup?",
+                "What new video games might I enjoy based on my gaming history?",
+                "Are there any household items that would complement my recent home renovations?",
+                "Any new gadgets I might find useful given my interest in smart home technology?"
+            ]
+        },
+        "Product Inquiry": {
+            "Specifications": [
+                "what is the lowest price for iphone16 sold and delivered by your store?",
+                "How long this toothbrush can last without charging?",
+                "How many croissant this 2lb flour can make?",
+                "What are the dimensions of the Samsung Galaxy Tab A8?",
+                "How many watts is the motor in this blender?",
+                "Does this vacuum cleaner come with a HEPA filter?",
+                "What is the weight capacity of this camping chair?",
+                "How many pages can this ink cartridge print?",
+                "Is the screen of this laptop touchscreen capable?",
+                "What are the material components of this raincoat?",
+                "How much RAM does this gaming PC have?",
+                "What is the shelf life of this protein powder?",
+                "Does this television support 4K resolution?"
+            ],
+            "Availability": [
+                "When will this floss be available?",
+                "I saw there are only 4 left for this soft bed, but I need to wait for the response from my roommate, normally how long will it take to restock?",
+                "Can this wifi router delievered to my home within 2 days?",
+                "Are there any more of these Bluetooth headphones in stock?",
+                "How soon can I expect the restock of this bestselling book?",
+                "Will this gaming console be available again soon?",
+                "Is this laptop expected to be back in stock before the sale ends?",
+                "What is the current stock status of this kitchen appliance?",
+                "Can you notify me when this air purifier is available again?",
+                "Is there a restock date for this particular pair of sneakers?",
+                "How many units of this smartphone are left in stock right now?",
+                "Will this seasonal item be restocked anytime this month?",
+                "What are the chances that this toy will be available for purchase again by next week?"
+            ]
+        }
+    },
+    "Consideration": {
+        "Comparison": {
+            "Feature Comparison": [
+                "Please compare Novogratz Her Majesty Upholstered Daybed with Trundle, Twin Size Frame, Blue Linen and Twin Daybed with Trundle Bed,Day Bed with Trundle Bed Twin Pop Up,Steel Slat Support Day Bed with Pop Up Trundle Bed Twin,Twin Daybed with Pop Up Trundle Bed for Kids Teens Adults",
+                "Which camera is better? iphone16 or iphone15 pro max?",
+                "I was considering headphones in my cart, could you compare them for me?",
+                "How does the Samsung Galaxy S23 compare to the iPhone 16 in terms of camera quality and battery life?",
+                "Can you list the differences between the Kindle Paperwhite and the Kindle Oasis?",
+                "I need a good laptop for gaming, should I choose the ASUS ROG Zephyrus or the Alienware M15?",
+                "What are the key distinctions between the Dyson V11 and the Dyson V10 vacuum cleaners?",
+                "Could you compare the Fitbit Versa 3 and the Apple Watch SE for fitness tracking features?",
+                "Which offers better sound quality, the Bose QuietComfort Earbuds or the Sony WF-1000XM4?",
+                "What are the feature differences between the Samsung QLED and the LG OLED TVs?",
+                "How do the features of the Nest Learning Thermostat compare to the Ecobee SmartThermostat?",
+                "Is the iPad Pro worth the extra cost compared to the iPad Air for graphic design work?",
+                "Can you detail the differences between the GoPro HERO11 and the DJI Osmo Action cameras?"
+            ],
+            "Price Comparison": [
+                "How much is iphone15 pro max again? compare with this google pixel?",
+                "Which one is cheaper? Top Bose and Sony headphones?",
+                "What is the price changing trend over the last month for this product?",
+                "How do prices of MacBook Pro and Dell XPS compare?",
+                "Can you show me the price difference between Kindle Paperwhite and Kindle Oasis?",
+                "Which TV brand offers better value for money, Samsung or LG?",
+                "Are Nike running shoes cheaper than Adidas?",
+                "Is the price of Sony PlayStation 5 lower than Xbox Series X?",
+                "What's more affordable, Dyson vacuum cleaners or Shark vacuums?",
+                "Compare the cost of Apple AirPods to Samsung Galaxy Buds.",
+                "Which is less expensive, HP Spectre laptop or Microsoft Surface Pro?",
+                "Are Fisher-Price toys more budget-friendly than LEGO sets?",
+                "Does Fitbit Charge cost more than Garmin Vivosmart?"
+            ]
+        },
+        "Evaluation": {
+            "User Reviews": [
+                "Please pick the the top 5 most recent and worst review comment for this shampoo",
+                "How many buyers for this hand mixer last month?",
+                "Exclude the rate 1 and rate 5, what is the avg rate for this sofa bed?",
+                "What are people saying about this Bluetooth speaker?",
+                "Can you summarize the user reviews for this vacuum cleaner?",
+                "How did customers rate this bread maker over the last year?",
+                "What are the most common complaints about this laptop?",
+                "Find the best-rated comments for this skincare product.",
+                "How many 4-star reviews does this air purifier have?",
+                "Are there any negative reviews for this smartphone?",
+                "What do users like the most about this coffee machine?",
+                "Have there been any recent reviews that mention battery life on this watch?",
+                "What is the average user rating for this winter jacket?"
+            ],
+            "Expert Reviews": [
+                "Is there any expert reviews for the book \"Coach the Person\"? How useful it is?",
+                "I need professional opinions on whether children can use this sunscreen? Is there any component bad for children?",
+                "I'm apprentice to golf, I need expert advice about whether this golf club is good to me.",
+                "Can I find professional evaluations for the new Samsung 4K TV model?",
+                "Are there any expert reviews on the effectiveness of this knee brace?",
+                "What do professionals say about the safety of this cooking appliance?",
+                "Is this brand of running shoes recommended by any fitness experts?",
+                "What do nutritionists say about this protein powder supplement?",
+                "Are there any professional opinions on the durability of this laptop for heavy software use?",
+                "Can any expert provide insights on the reliability of this new electric car model?",
+                "Is there an expert review on how well this smartphone camera performs in low light?",
+                "What do dermatologists think about the ingredients in this anti-aging cream?",
+                "Can experts weigh in on the pros and cons of this new home security system?"
+            ]
+        },
+        "Queries": {
+            "Customer Service Inquiry": [
+                "How can I contact the seller for this product?",
+                "I want to consult the assembly details of this sofa bed, connect me to the customer service.",
+                "I need human assistant",
+                "What's the fastest way to reach your store's customer service?",
+                "How do I get a refund for a recent order?",
+                "Can you help me with a missing package complaint?",
+                "I need assistance with accessing my your store account.",
+                "Can I talk to someone about a charge I don't recognize?",
+                "How do I report a problem with a delivered item?",
+                "Who do I contact regarding a defective product?",
+                "Can customer service help me update my delivery address?",
+                "What should I do if I received the wrong order?",
+                "Is there a way to chat with a customer service representative online?"
+            ],
+            "Product Clarifications": [
+                "The instruction said it will send two version randomly, is this possible to comment the exact version I want?",
+                "It's not clear in the description how to assembly this sofa bed, is there any detailed video or picture of the steps?",
+                "What is the weight and dimension of the package?",
+                "Can you tell me if this laptop comes with an international warranty?",
+                "Is the fabric of this shirt wrinkle-resistant?",
+                "What material is used in the construction of this bookshelf?",
+                "Does this phone case have a built-in screen protector?",
+                "Are these sneakers waterproof or water-resistant?",
+                "Is there a warranty included with this appliance purchase?",
+                "Can you confirm if this lamp is dimmable with LED bulbs?",
+                "What type of battery does this toy car require?",
+                "Does this blender have variable speed settings?",
+                "Is this skincare product suitable for sensitive skin?"
+            ]
+        }
+    },
+    "Purchase Decision": {
+        "Checkout": {
+            "Payment and Billing": [
+                "I want to view my cart.",
+                "Take me to the checkout page.",
+                "where I can update my card?",
+                "remove my expired card",
+                "Will my billing address expose to other people?",
+                "How do I add a new payment method to my account?",
+                "Can I use multiple cards for a single purchase?",
+                "What should I do if my payment was declined?",
+                "Where can I view my billing history?",
+                "How do I apply a gift card to my purchase?",
+                "Why am I being charged for items I didn\u2019t buy?",
+                "How long does it take to process a refund?",
+                "Can I change my billing address after placing an order?",
+                "How do I apply a promotional code to my order?",
+                "Is it possible to get a credit for returning a product?"
+            ]
+        },
+        "Promotions": {
+            "Coupon Codes": [
+                "How can I get the coupon when checkout?",
+                "Where the promotion code came from? I want to add one.",
+                "Is there any promotions applied to my product? Is there any replacement which with coupon?",
+                "Are there any current coupon codes available for electronics?",
+                "How do I apply a discount code at checkout?",
+                "Can I use multiple promotion codes on a single purchase?",
+                "Where can I find promotional codes for upcoming sales?",
+                "Do your store Prime members get exclusive coupon codes?",
+                "Is there a way to receive notifications for new discount codes?",
+                "Can I share my coupon code with someone else?",
+                "How can I verify a coupon code before using it?",
+                "Are there any special holiday deals with coupon codes?",
+                "What should I do if my discount code is not working?"
+            ],
+            "Seasonal Offers": [
+                "Are there any Black Friday deals available right now?",
+                "When will the next your store Prime Day sale take place?",
+                "What are the best Christmas promotions your store is offering?",
+                "Can I find any discounts on summer clothing collections?",
+                "Are there any special offers for students during back-to-school season?",
+                "Does your store offer any promotions for Cyber Monday?",
+                "What kind of deals does your store have for Valentine's Day gifts?",
+                "How can I find out about upcoming seasonal sales on your store?",
+                "Are there any exclusive discounts for your store Prime members during the fall season?",
+                "What promotions does your store have running for Halloween decorations?"
+            ]
+        },
+        "Transaction": {
+            "Payment Confirmation": [
+                "Where I can get my payment confirmation letter?",
+                "I have submit my order.",
+                "Do you receive my order request?",
+                "How do I know if my payment went through?",
+                "Can you confirm if my payment was successful?",
+                "Where can I check the status of my payment?",
+                "Did the payment for my recent order get processed?",
+                "Have you received the payment for my purchase?",
+                "When will I receive confirmation of my payment?",
+                "Is my payment confirmed for the last order I placed?",
+                "I need to verify if my payment was completed.",
+                "Can you send me a receipt for my payment?",
+                "Has my transaction been processed successfully?"
+            ],
+            "Order Receipt": [
+                "Where I can get the receipt, I need it for reimbursement.",
+                "How do I find my order receipt for tax purposes?",
+                "Can you help me locate the receipt for my recent purchase?",
+                "Where can I download a copy of my order receipt?",
+                "I need the invoice for my latest order, where can I get it?",
+                "Is there a way to view the receipt for an your store order I placed last week?",
+                "How can I access the receipt for a gift I bought on your store?",
+                "Can I have the receipt emailed to me for my recent your store order?",
+                "I need to print the receipt for an order I made. Where should I look?",
+                "Where do I find the digital receipt for an item I just bought?",
+                "I need a PDF version of my order receipt, how do I get it?"
+            ]
+        },
+        "Shipping and Delivery": {
+            "Shipping Options": [
+                "What are the shipping options?",
+                "Which one does most people choose from?",
+                "How accurate is the estimate time?",
+                "What are the differences between standard and expedited shipping?",
+                "Can I select same-day delivery for all products?",
+                "How does your store's scheduled delivery work?",
+                "What's the cost difference between two-day and one-day shipping?",
+                "Is there an option for international express shipping?",
+                "How can I track the shipping status of my order?",
+                "Are there any free shipping options available for non-Prime members?",
+                "How do I change the shipping method after placing an order?",
+                "What is the cut-off time for next-day delivery orders?",
+                "How does your store Locker delivery differ from regular shipping?"
+            ],
+            "Delivery Instructions": [
+                "I want the delivery guy to give me a call before delivery",
+                "If there is nobody at home, please do not left it at the door but take it back and send again when I'm available.",
+                "Is it possible to get the contact information of the person who make the delivery?",
+                "Can I specify a delivery window for my package?",
+                "Please leave the package with the concierge at the front desk.",
+                "I need the delivery to be made after 5 PM.",
+                "Ensure the package is not left in the rain if I'm not home.",
+                "Can you deliver the package to my office instead of home?",
+                "I would like the package to be left at an alternative address if I'm not available.",
+                "Please place the package inside the garage, the code is 1234.",
+                "Is it possible for the delivery person to ring the doorbell when they arrive?",
+                "I prefer to have my package delivered without requiring a signature.",
+                "Can the delivery be postponed until I return from vacation?"
+            ]
+        }
+    },
+    "Post-Purchase Behavior": {
+        "Order Management": {
+            "Order Tracking": [
+                "Take me to the order tracking page",
+                "Where is my package now?",
+                "When will my package arrived?",
+                "Can you show me the current status of my order?",
+                "What\u2019s the latest update on my package's delivery?",
+                "How do I find out where my shipment is?",
+                "When is my order expected to be delivered?",
+                "I need to know the delivery date of my package.",
+                "Where can I see the progress of my current order?",
+                "Is my order going to arrive on time?",
+                "How far along is my shipment in the delivery process?",
+                "Can I get real-time updates on my package?",
+                "Tell me the delivery schedule for my recent order."
+            ],
+            "Order History": [
+                "I want to buy again",
+                "I bought DenTek floss before, please buy it again",
+                "I think I bought a facial cleanser before, what exactly it is?",
+                "Can I see a list of items I've purchased in the last month?",
+                "Show me my order history from last year.",
+                "Where can I find the details of my previous orders?",
+                "I'd like to reorder something I bought last week.",
+                "Can you help me find a book I ordered a few months ago?",
+                "I'd like to review the orders I placed in the past six months.",
+                "What were my last five orders?",
+                "How do I get a receipt for a past purchase?",
+                "Can you show me an item I ordered in January?",
+                "I need information about a product I ordered previously."
+            ],
+            "Order Cancellation": [
+                "I want to cancel the order",
+                "It's too long for the delivery, I don't need it anymore. Please cancel it.",
+                "How can I cancel my pending order?",
+                "Please assist me in cancelling my recent order.",
+                "I changed my mind, can you cancel my order?",
+                "When is the deadline to cancel an order before it ships?",
+                "The delivery date doesn't work for me, can you help me cancel?",
+                "Can I cancel an order that's not yet shipped?",
+                "I accidentally placed an order, can it be cancelled?",
+                "Is it possible to cancel my order before it leaves the warehouse?",
+                "Help me cancel an item I bought by mistake.",
+                "What steps do I need to follow to cancel my order?"
+            ],
+            "Order Modification": [
+                "Oh, I want to change the address for my order",
+                "Is it possible to change the payment method for my current order?",
+                "How do I update the delivery address for my recent purchase?",
+                "Can I switch the payment method for an order I just placed?",
+                "Is it possible to edit the shipping details on an existing order?",
+                "What steps should I follow to change my billing information for an ongoing order?",
+                "I need to modify the payment information on my order\u2014how can I do that?",
+                "Can I update the address my package is being sent to after placing the order?",
+                "How do I change the credit card linked to my current order?",
+                "Is there a way to adjust the shipping address after confirming my order?",
+                "Can I alter the payment method associated with my pending order?",
+                "What is the process to correct the delivery address on an order I've submitted?"
+            ]
+        },
+        "Product Reviews and Feedback": {
+            "Writing Reviews": [
+                "How can I write reviews?",
+                "What are the steps to write a product review on your store?",
+                "Can you guide me on how to submit a review for a product I purchased?",
+                "Where do I find the option to leave a review on your store?",
+                "Are there tips for writing an effective product review?",
+                "How long should my your store review be?",
+                "What elements should I include in my product review?",
+                "Is there a format I should follow when writing a review on your store?",
+                "What kind of feedback is most useful in a product review?",
+                "How can I ensure my review meets your store's guidelines?",
+                "What are some common mistakes to avoid in writing a product review?"
+            ],
+            "Review Guidelines": [
+                "How to upload a video to review?",
+                "Is there any bonus for the ones who write reivew? like cash back?",
+                "Whether the sellers know exactly who wrote the review? Can it be anonymous?",
+                "Can I edit or delete my product review after posting it?",
+                "What is the minimum character count for a review to be accepted?",
+                "Are there any restrictions on mentioning competitors in a review?",
+                "How long does it take for my review to be published?",
+                "Can I leave a review if I didn\u2019t purchase the product on your store?",
+                "Is it allowed to include links in my product review?",
+                "What happens if my review doesn't meet your store's guidelines?",
+                "Are there penalties for providing false information in a review?",
+                "Does your store verify the purchase before allowing a review?",
+                "Can someone report a review if they find it inappropriate?"
+            ],
+            "Review Ratings": [
+                "I saw some of the ratings are the same in terms of number and rate score but for different product, what happens?",
+                "Does this includes all the ratings since the product exist or for certain range of time?",
+                "How the product visibility related to the rating?",
+                "How does the number of reviews impact a product's rating visibility?",
+                "What factors can cause a product's rating to change over time?",
+                "Do higher ratings always mean more visibility on your store?",
+                "Are there specific thresholds in ratings that affect search result rankings?",
+                "How are recent ratings weighted compared to older ones?",
+                "Can a product with fewer, higher ratings outrank a well-rated product with many reviews?",
+                "What is the process for updating a product's visible rating score?",
+                "How do negative reviews affect a product's visibility on your store?",
+                "Is there a difference in visibility for verified purchase ratings?",
+                "How frequently are product ratings and visibility updated on your store?"
+            ]
+        },
+        "Support": {
+            "Customer Service and Support": [
+                "The product sucks, I want to return!",
+                "Give me the human assistant!",
+                "I need some help about how to use this GoPro! It's hard to set it up!",
+                "How do I contact your store's customer service by phone?",
+                "Where can I find information about returning a defective item?",
+                "Can I get a refund for a product that arrived damaged?",
+                "I need technical support for my Kindle. Who should I contact?",
+                "What are the steps to file a complaint about a seller on your store?",
+                "Is there an email address for your store customer support?",
+                "How can I chat with an your store representative online?",
+                "What is your store's policy on returning unwanted gifts?",
+                "I\u2019m having trouble with my your store Prime subscription. Can I speak to someone?",
+                "How do I escalate an issue that customer service hasn't resolved?"
+            ]
+        }
+    }
+}
