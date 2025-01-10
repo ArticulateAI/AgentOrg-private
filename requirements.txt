@@ -134,3 +134,4 @@ pymilvus==2.4.7
 mysql-connector-python==8.3.0
 PyMySQL==1.1.0
 ShopifyAPI==12.7.0
+janus==1.0.0

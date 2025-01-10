@@ -1,4 +1,5 @@
 import logging
+from typing import Any, Iterator, Union
 
 from langgraph.graph import StateGraph, START
 from langchain_openai import ChatOpenAI
@@ -26,7 +27,7 @@ class RagMsgWorker(BaseWorker):
     def _create_action_graph(self):
         workflow = StateGraph(MessageState)
         # Add nodes for each worker
-        rag_wkr = RAGWorker()
+        rag_wkr = RAGWorker(stream_response=False)
         msg_wkr = MessageWorker()
         workflow.add_node("rag_worker", rag_wkr.execute)
         workflow.add_node("message_worker", msg_wkr.execute)

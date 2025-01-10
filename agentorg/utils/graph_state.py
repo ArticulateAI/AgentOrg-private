@@ -1,4 +1,5 @@
 from typing import TypedDict, Annotated
+import janus
 from pydantic import BaseModel
 from enum import Enum
 
@@ -69,3 +70,6 @@ class MessageState(TypedDict):
     status: StatusEnum
     slots: list[Slot]  # probably won't need anymore
     metadata: dict[str, any]
+    # stream
+    is_stream: bool
+    message_queue: janus.SyncQueue

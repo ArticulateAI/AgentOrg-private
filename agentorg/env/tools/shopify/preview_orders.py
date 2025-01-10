@@ -33,13 +33,14 @@ outputs = [
 ]
 ORDERS_NOT_FOUND = "error: order not found"
 errors = [
-    SHOPIFY_AUTH_ERROR, 
+    SHOPIFY_AUTH_ERROR,
     ORDERS_NOT_FOUND
 ]
 
 @register_tool(description, slots, outputs, lambda x: x not in errors)
-def get_order_details(order_ids: list, limit=10, **kwargs) -> str:
+def preview_orders(order_ids: list, limit=10, **kwargs) -> str:
     limit = limit or 10
+    
     shop_url = kwargs.get("shop_url")
     api_version = kwargs.get("api_version")
     token = kwargs.get("token")
@@ -48,29 +49,33 @@ def get_order_details(order_ids: list, limit=10, **kwargs) -> str:
         return SHOPIFY_AUTH_ERROR
     
     try:
+        ids = ' OR '.join(f'id:{oid.split("/")[-1]}' for oid in order_ids)
         with shopify.Session.temp(shop_url, api_version, token):
-            results = []
-            for order_id in order_ids:
-                response = shopify.GraphQL().execute(f"""
+            response = shopify.GraphQL().execute(f"""
                 {{
-                    order (id: "{order_id}") {{
-                        id
-                        name
-                        totalPriceSet {{
-                            presentmentMoney {{
-                                amount
+                    orders (query:"{ids}" first: {len(order_ids)}) {{
+                        nodes {{
+                            id
+                            name
+                            totalPriceSet {{
+                                presentmentMoney {{
+                                    amount
+                                }}
                             }}
-                        }}
-                        lineItems(first: 10) {{
-                            edges {{
-                                node {{
+                            lineItems(first: {limit}) {{
+                                nodes {{
                                     id
                                     title
                                     quantity
                                     variant {{
                                         id
-                                        product {{
+                                        title
+                                        quantity
+                                        variant {{
                                             id
+                                            product {{
+                                                id
+                                            }}
                                         }}
                                     }}
                                 }}
@@ -78,9 +83,8 @@ def get_order_details(order_ids: list, limit=10, **kwargs) -> str:
                         }}
                     }}
                 }}
-                """)
-            parsed_response = json.loads(response)["data"]["order"]
-            results.append(json.dumps(parsed_response))
+            """)
+        results = json.loads(response)["data"]["orders"]['nodes']
         return results
     except Exception as e:
         return ORDERS_NOT_FOUND

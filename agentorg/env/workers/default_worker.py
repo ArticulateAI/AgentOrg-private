@@ -1,5 +1,4 @@
 import logging
-import os
 
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI

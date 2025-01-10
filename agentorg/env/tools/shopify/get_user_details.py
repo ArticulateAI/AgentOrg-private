@@ -3,6 +3,7 @@ from typing import Any, Dict
 import shopify
 
 from agentorg.env.tools.tools import register_tool
+from agentorg.env.tools.shopify.utils import SHOPIFY_AUTH_ERROR
 
 description = "Get the details of a user."
 slots = [
@@ -21,16 +22,14 @@ outputs = [
         "description": "The user details of the user. such as '{\"firstName\": \"John\", \"lastName\": \"Doe\", \"email\": \"example@gmail.com\"}'."
     }
 ]
+USER_NOT_FOUND_ERROR = "error: user not found"
+errors = [USER_NOT_FOUND_ERROR]
 
-@register_tool(description, slots, outputs)
+@register_tool(description, slots, outputs, lambda x: x not in errors)
 def get_user_details(user_id: str, **kwargs) -> str:
     shop_url = kwargs.get("shop_url")
     api_version = kwargs.get("api_version")
     token = kwargs.get("token")
-
-    if not shop_url or not api_version or not token:
-        return "error: missing some or all required shopify authentication parameters: shop_url, api_version, token. Please set up 'fixed_args' in the config file. For example, {'name': <unique name of the tool>, 'fixed_args': {'token': <shopify_access_token>, 'shop_url': <shopify_shop_url>, 'api_version': <Shopify API version>}}"
-
     try:
         with shopify.Session.temp(shop_url, api_version, token):
             response = shopify.GraphQL().execute(f"""
@@ -72,6 +71,4 @@ def get_user_details(user_id: str, **kwargs) -> str:
         parsed_response = json.loads(response)["data"]["customer"]
         return json.dumps(parsed_response)
     except Exception as e:
-        print("error: user not found")
-        print(e)
-        return "error: user not found"
+        return USER_NOT_FOUND_ERROR

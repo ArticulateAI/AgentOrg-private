@@ -7,6 +7,8 @@ import os
 from typing import List, Dict, Any, Tuple
 import ast
 import copy
+from agentorg.env.env import Env
+import janus
 from dotenv import load_dotenv
 
 from langchain_core.runnables import RunnableLambda
@@ -18,6 +20,7 @@ from agentorg.orchestrator.task_graph import TaskGraph
 from agentorg.env.tools.utils import ToolGenerator
 from agentorg.orchestrator.NLU.nlu import SlotFilling
 from agentorg.orchestrator.prompts import RESPOND_ACTION_NAME, RESPOND_ACTION_FIELD_NAME, REACT_INSTRUCTION
+from agentorg.types import EventType, StreamType
 from agentorg.utils.graph_state import ConvoMessage, OrchestratorMessage, MessageState, StatusEnum, BotConfig
 from agentorg.utils.utils import init_logger, format_chat_history
 from agentorg.orchestrator.NLU.nlu import NLU
@@ -30,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 class AgentOrg:
-    def __init__(self, config, env, **kwargs):
+    def __init__(self, config, env: Env, **kwargs):
         if isinstance(config, dict):
             self.product_kwargs = config
         else:
@@ -67,7 +70,7 @@ class AgentOrg:
         return message.model_dump(), action, res._hidden_params["response_cost"]
 
 
-    def get_response(self, inputs: dict) -> Dict[str, Any]:
+    def get_response(self, inputs: dict, stream_type: StreamType = None, message_queue: janus.SyncQueue = None) -> Dict[str, Any]:
         text = inputs["text"]
         chat_history = inputs["chat_history"]
         params = inputs["parameters"]
@@ -153,7 +156,9 @@ class AgentOrg:
             trajectory=params["history"], 
             message_flow=params.get("worker_response", {}).get("message_flow", ""), 
             slots=params.get("dialog_states"),
-            metadata=params.get("metadata")
+            metadata=params.get("metadata"),
+            is_stream=True if stream_type is not None else False,
+            message_queue=message_queue
         )
         
         response_state, params = self.env.step(node_info["name"], message_state, params)
@@ -183,7 +188,9 @@ class AgentOrg:
                     trajectory=params["history"], 
                     message_flow=params.get("worker_response", {}).get("message_flow", ""), 
                     slots=params.get("dialog_states"),
-                    metadata=params.get("metadata")
+                    metadata=params.get("metadata"),
+                    is_stream=True if stream_type is not None else False,
+                    message_queue=message_queue
                 )
                 
                 action, response_state, msg_history = self.env.planner.execute(message_state, params["history"])
@@ -201,8 +208,9 @@ class AgentOrg:
                 action_spaces.append({"name": RESPOND_ACTION_NAME, "arguments": {RESPOND_ACTION_FIELD_NAME: response_state.get("message_flow", "") or response_state.get("response", "")}})
                 logger.info("Action spaces: " + json.dumps(action_spaces))
                 params_history_str = format_chat_history(params["history"])
+                logger.info(f"{params_history_str=}")
                 prompt = (
-                    sys_instruct + "\n#Available tools\n" + json.dumps(action_spaces) + REACT_INSTRUCTION + "\n\n" + "Conversations:\n" + params_history_str + "You current task is: " + node_info["attribute"].get("task", "") + "\nThougt:\n"
+                    sys_instruct + "\n#Available tools\n" + json.dumps(action_spaces) + REACT_INSTRUCTION + "\n\n" + "Conversations:\n" + params_history_str + "Your current task is: " + node_info["attribute"].get("task", "") + "\nThougt:\n"
                 )
                 messages: List[Dict[str, Any]] = [
                     {"role": "system", "content": prompt}
@@ -217,8 +225,12 @@ class AgentOrg:
                     tool_response = params.get("metadata", {}).get("tool_response", {})
 
         if not response_state.get("response", ""):
+            logger.info("No response from the ReAct framework, do context generation")
             tool_response = {}
-            response_state = ToolGenerator.context_generate(response_state)
+            if stream_type is None:
+                response_state = ToolGenerator.context_generate(response_state)
+            else:
+                response_state = ToolGenerator.stream_context_generate(response_state)
 
         response = response_state.get("response", "")
         params["metadata"]["tool_response"] = {}
