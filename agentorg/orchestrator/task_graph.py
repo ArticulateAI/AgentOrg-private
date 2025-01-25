@@ -74,7 +74,7 @@ class TaskGraph(TaskGraphBase):
         node = None
         if services_nodes:
             candidates_nodes = [v for k, v in services_nodes.items()]
-            candidates_nodes_weights = [list(self.graph.in_edges(n, data="weight"))[0][2] for n in candidates_nodes]
+            candidates_nodes_weights = [list(self.graph.in_edges(n, data="attribute"))[0][2]["weight"] for n in candidates_nodes]
             node = np.random.choice(candidates_nodes, p=normalize(candidates_nodes_weights))
         return node
 
@@ -136,6 +136,7 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"intent in _get_node: {intent}")
         candidates_intents = collections.defaultdict(list)
         node_name = self.graph.nodes[sample_node]["name"]
+        id = self.graph.nodes[sample_node]["id"]
         available_nodes[sample_node]["limit"] -= 1
         if intent and available_nodes[sample_node]["limit"] <= 0 and intent in available_intents:
             # delete the corresponding node item from the intent list
@@ -147,12 +148,13 @@ class TaskGraph(TaskGraphBase):
         params["curr_node"] = sample_node
         params["available_nodes"] = available_nodes
         params["available_intents"] = available_intents
-        # TODO: This will be used to check whether we skip the worker/tool or not, which is handled by the task graph framework
-        # skip = self._check_skip(node_name, sample_node)
+        # worker_class = WORKER_REGISTRY.get(worker_name)
+        # TODO: This will be used to check whether we skip the worker or not, which is handled by the task graph framework
+        # skip = self._check_skip(worker_class, sample_node)
         # if skip:
         #     node_info = {"name": None, "attribute": None}
         # else:
-        node_info = {"name": node_name, "attribute": self.graph.nodes[sample_node]["attribute"]}
+        node_info = {"id": id, "name": node_name, "attribute": self.graph.nodes[sample_node]["attribute"]}
         
         return node_info, params, candidates_intents
 
@@ -207,7 +209,7 @@ class TaskGraph(TaskGraphBase):
         node_status = params.get("node_status", {})
         status = node_status.get(curr_node, StatusEnum.COMPLETE.value)
         if status == StatusEnum.INCOMPLETE.value:
-            node_info = {"name": self.graph.nodes[curr_node]["name"], "attribute": self.graph.nodes[curr_node]["attribute"]}
+            node_info = {"id": self.graph.nodes[curr_node]["id"], "name": self.graph.nodes[curr_node]["name"], "attribute": self.graph.nodes[curr_node]["attribute"]}
             return node_info, params
             
 
@@ -429,7 +431,7 @@ class TaskGraph(TaskGraphBase):
             nlu_records.append({"candidate_intents": [], "pred_intent": "", "no_intent": True, "global_intent": False})
         params["nlu_records"] = nlu_records
         params["curr_node"] = curr_node
-        node_info = {"name": "DefaultWorker", "attribute": {"value": "", "direct": self.graph.nodes[curr_node].get("direct", False)}}
+        node_info = {"id": "DefaultWorker", "name": "DefaultWorker", "attribute": {"value": "", "direct": False}}
         
         return node_info, params
 

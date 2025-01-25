@@ -135,6 +135,18 @@ class AgentOrg:
                 metadata={"chat_id": metadata.get("chat_id"), "turn_id": metadata.get("turn_id")}
             )
 
+        # Direct response
+        node_attribute = node_info["attribute"]
+        if node_attribute["value"].strip():
+            if node_attribute.get("direct_response"):                    
+                return_response = {
+                    "answer": node_attribute["value"],
+                    "parameters": params
+                }
+                if node_attribute["type"] == "multiple-choice":
+                    return_response["choice_list"] = node_attribute["choice_list"]
+                return return_response
+
         # Tool/Worker
         user_message = ConvoMessage(history=chat_history_str, message=text)
         orchestrator_message = OrchestratorMessage(message=node_info["attribute"]["value"], attribute=node_info["attribute"])
@@ -161,7 +173,7 @@ class AgentOrg:
             message_queue=message_queue
         )
         
-        response_state, params = self.env.step(node_info["name"], message_state, params)
+        response_state, params = self.env.step(node_info["id"], message_state, params)
         
         logger.info(f"{response_state=}")
 
@@ -180,7 +192,7 @@ class AgentOrg:
             node_info, params = taskgraph_chain.invoke(taskgraph_inputs)
             logger.info("=============node_info=============")
             logger.info(f"The while node info is : {node_info}")
-            if node_info["name"] not in self.env.workers and node_info["name"] not in self.env.tools:
+            if node_info["id"] not in self.env.workers and node_info["id"] not in self.env.tools:
                 message_state = MessageState(
                     sys_instruct=sys_instruct, 
                     user_message=user_message, 
@@ -200,10 +212,10 @@ class AgentOrg:
                 else:
                     tool_response = {}
             else:
-                if node_info["name"] in self.env.tools:
-                    node_actions = [{"name": node_info["name"], "arguments": self.env.tools[node_info["name"]]["execute"]().info}]
-                elif node_info["name"] in self.env.workers:
-                    node_actions = [{"name": node_info["name"], "description": self.env.workers[node_info["name"]]().description}]
+                if node_info["id"] in self.env.tools:
+                    node_actions = [{"name": self.env.id2name[node_info["id"]], "arguments": self.env.tools[node_info["id"]]["execute"]().info}]
+                elif node_info["id"] in self.env.workers:
+                    node_actions = [{"name": self.env.id2name[node_info["id"]], "description": self.env.workers[node_info["id"]]["execute"]().description}]
                 action_spaces = node_actions
                 action_spaces.append({"name": RESPOND_ACTION_NAME, "arguments": {RESPOND_ACTION_FIELD_NAME: response_state.get("message_flow", "") or response_state.get("response", "")}})
                 logger.info("Action spaces: " + json.dumps(action_spaces))
@@ -221,7 +233,7 @@ class AgentOrg:
                     FINISH = True
                 else:
                     message_state["response"] = "" # clear the response cache generated from the previous steps in the same turn
-                    response_state, params = self.env.step(action, message_state, params)
+                    response_state, params = self.env.step(self.env.name2id[action], message_state, params)
                     tool_response = params.get("metadata", {}).get("tool_response", {})
 
         if not response_state.get("response", ""):
@@ -234,6 +246,8 @@ class AgentOrg:
 
         response = response_state.get("response", "")
         params["metadata"]["tool_response"] = {}
+        # TODO: params["metadata"]["worker"] is not serialization, make it empty for now
+        params["metadata"]["worker"] = {}
         params["tool_response"] = tool_response
         output = {
             "answer": response,

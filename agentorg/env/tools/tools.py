@@ -10,31 +10,25 @@ from agentorg.orchestrator.NLU.nlu import SlotFilling
 from agentorg.utils.utils import format_chat_history
 
 
-TOOL_REGISTRY = {}
-
 logger = logging.getLogger(__name__)
 
     
 def register_tool(desc, slots=[], outputs=[], isComplete=lambda x: True):
+    current_file_dir = os.path.dirname(__file__)
     def inner(func):
         file_path = inspect.getfile(func)
-        current_file_dir = os.path.dirname(__file__)
         relative_path = os.path.relpath(file_path, current_file_dir)
         # reformat the relative path to replace / with -, and remove .py, because the function calling in openai only allow the function name match the patter the pattern '^[a-zA-Z0-9_-]+$'
         relative_path = relative_path.replace("/", "-").replace(".py", "")
         key = f"{relative_path}-{func.__name__}"
-
-        """Decorator to register a worker."""
         tool = lambda : Tool(func, key, desc, slots, outputs, isComplete)
-        TOOL_REGISTRY[key] = tool
-
         return tool
     return inner
 
 class Tool:
     def __init__(self, func, name, description, slots, outputs, isComplete):
-        self.name = name
         self.func = func
+        self.name = name
         self.description = description
         self.output = outputs
         self.slotfillapi: SlotFilling = None
@@ -109,7 +103,7 @@ class Tool:
                         {
                             'function': {
                                 'arguments': json.dumps(kwargs), 
-                                'name': self.func.__name__
+                                'name': self.name
                             }, 
                             'id': call_id, 
                             'type': 'function'
@@ -120,7 +114,7 @@ class Tool:
                 state["trajectory"].append({
                     "role": "tool",
                     "tool_call_id": call_id,
-                    "name": self.func.__name__,
+                    "name": self.name,
                     "content": response
                 })
                 if "error" in response:

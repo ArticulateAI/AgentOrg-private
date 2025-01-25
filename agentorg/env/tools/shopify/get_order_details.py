@@ -18,7 +18,7 @@ slots = [
     },
     {
         "name": "limit",
-        "type": "int",
+        "type": "string",
         "description": "Maximum number of products to show.",
         "prompt": "",
         "required": False
@@ -39,7 +39,7 @@ errors = [
 
 @register_tool(description, slots, outputs, lambda x: x not in errors)
 def get_order_details(order_ids: list, limit=10, **kwargs) -> str:
-    limit = limit or 10
+    limit = int(limit) or 10
     shop_url = kwargs.get("shop_url")
     api_version = kwargs.get("api_version")
     token = kwargs.get("token")
