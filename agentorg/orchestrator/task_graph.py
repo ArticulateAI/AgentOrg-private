@@ -276,7 +276,7 @@ class TaskGraph(TaskGraphBase):
                         available_intents_w_unsure = copy.deepcopy(available_intents)
                     else:
                         available_intents_w_unsure = copy.deepcopy(available_intents)
-                        available_intents_w_unsure[self.unsure_intent.get("intent")].append(self.unsure_intent)
+                        available_intents_w_unsure[self.unsure_intent.get("intent")] = [self.unsure_intent]
                     logger.info(f"available_intents_w_unsure: {available_intents_w_unsure}")
                     
                     pred_intent = self.nluapi.execute(self.text, available_intents_w_unsure, self.chat_history_str, params.get("metadata", {}))
