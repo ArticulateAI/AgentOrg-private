@@ -1,6 +1,8 @@
+import asyncio
 import os
 import logging
 import json
+from typing import List
 import uuid
 import ast
 import inspect
@@ -36,7 +38,7 @@ class Tool:
         self.slots = self._format_slots(slots)
         self.isComplete = isComplete
 
-    def _format_slots(self, slots):
+    def _format_slots(self, slots) -> List[Slot]:
         format_slots = []
         for slot in slots:
             format_slots.append(Slot(
@@ -138,9 +140,41 @@ class Tool:
         ## Currently, the value of the tool is stored and returned in state["message_flow"]
         return state
     
+    async def realtime_execute(self, state: MessageState, **fixed_args):
+        slots, change_context = await self.slotfillapi.realtime_execute(self.slots, self.to_openai_tool_def())
+        if change_context:
+            state["change_context"] = True
+            logger.info(f"Change context detected for tool: {self.name}. Hence skipping tool execution")
+            return state
+        logger.info(f"Realtime execution for tool {self.name}: {slots}")
+        kwargs = {slot.name: slot.value for slot in slots}
+        combined_kwargs = {**kwargs, **fixed_args}
+        response = await asyncio.to_thread(self.func, **combined_kwargs)
+        logger.info(f"Tool {self.name} response: {response}")
+                
+        state["message_flow"] = response
+        return state
+    
     def __str__(self):
         return f"{self.__class__.__name__}"
 
     def __repr__(self):
         return f"{self.__class__.__name__}"
     
+    def to_openai_tool_def(self) -> dict:
+        parameters = {
+            "type": "object",
+            "properties": {},
+            "required": [slot.name for slot in self.slots if slot.required]
+        }
+        for slot in self.slots:
+            parameters["properties"][slot.name] = {
+                "type": slot.type,
+                "description": slot.description
+            }
+        return {
+            "type": "function",
+            "name": self.name,
+            "description": self.description,
+            "parameters": parameters
+        }

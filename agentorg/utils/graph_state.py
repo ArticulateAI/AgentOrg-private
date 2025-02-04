@@ -1,7 +1,9 @@
-from typing import TypedDict, Annotated
+from typing import TypedDict, Annotated, Union
 import janus
 from pydantic import BaseModel
 from enum import Enum
+
+from agentorg.openai_realtime.client import RealtimeClient
 
 
 ### Bot-related classes
@@ -11,6 +13,9 @@ class BotConfig(BaseModel):
     language: str
     bot_type: str
     available_workers: list[dict[str, str]]
+    milvus_collection_name: str
+    realtime_api_prompt: Union[str, None]
+
 
 
 ### Message-related classes
@@ -73,3 +78,8 @@ class MessageState(TypedDict):
     # stream
     is_stream: bool
     message_queue: janus.SyncQueue
+    # fore realtime api
+    is_realtime: bool
+    realtime_client: RealtimeClient
+    sent_response: bool
+    change_context: bool

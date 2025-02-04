@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import time
 import os
@@ -12,7 +13,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai.chat_models import ChatOpenAI
 
 from agentorg.env.prompts import load_prompts
-from agentorg.utils.mysql import mysql_pool
+from agentorg.openai_realtime.client import RealtimeClient
+from agentorg.utils.graph_state import BotConfig
 from agentorg.utils.model_config import MODEL
 from agentorg.env.prompts import load_prompts
 from agentorg.utils.graph_state import MessageState
@@ -38,6 +40,14 @@ class RetrieveEngine():
 
         state["message_flow"] = retrieved_text
         state["metadata"]["tool_response"] = retriever_params
+        return state
+    
+    @staticmethod
+    async def realtime_milvus_retrieve(state: MessageState):
+        milvus_retriever = MilvusRetrieverExecutor(state["bot_config"])
+        retrieved_text = await milvus_retriever.realtime_retrieve(state["realtime_client"])
+
+        state["message_flow"] = retrieved_text
         return state
 
 class MilvusRetriever:
@@ -572,7 +582,7 @@ class MilvusRetriever:
 
 
 class MilvusRetrieverExecutor:
-    def __init__(self, bot_config):
+    def __init__(self, bot_config: BotConfig):
         self.bot_config = bot_config
         self.llm = ChatOpenAI(model=MODEL["model_type_or_path"], timeout=30000)
 
@@ -620,12 +630,22 @@ class MilvusRetrieverExecutor:
 
         ret_results: List[RetrieverResult] = []
         st = time.time()
-        milvus_db = mysql_pool.fetchone("SELECT collection_name FROM qa_bot WHERE id=%s AND version=%s", (self.bot_config.bot_id, self.bot_config.version))
         with MilvusRetriever() as retriever:
-            ret_results = retriever.search(milvus_db["collection_name"], self.bot_config.bot_id, self.bot_config.version, ret_input)
+            ret_results = retriever.search(self.bot_config.milvus_collection_name, self.bot_config.bot_id, self.bot_config.version, ret_input)
         rt = time.time() - st
         logger.info(f"MilvusRetriever search took {rt} seconds")
         retriever_params = self.postprocess(ret_results)
         retriever_params["timing"] = {"retriever_input": rit, "retriever_search": rt}
         thought = self.generate_thought(ret_results)
         return thought, retriever_params
+    
+    async def realtime_retrieve(self, realtime_client: RealtimeClient):
+        prompt = PromptTemplate.from_template(load_prompts(self.bot_config)["realtime_retrieve_contextualize_q_prompt"]).format()
+        retriever_context = await realtime_client.get_text_response(prompt, "retriever_context")
+        query = retriever_context["query"]
+        with MilvusRetriever() as retriever:
+            s_t = time.time()
+            ret_results = await asyncio.to_thread(retriever.search, self.bot_config.milvus_collection_name, self.bot_config.bot_id, self.bot_config.version, query)
+            logger.info(f"MilvusRetriever search time: {time.time() - s_t}")
+        thought = self.generate_thought(ret_results)
+        return thought

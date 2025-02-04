@@ -52,6 +52,22 @@ class ToolGenerator():
         return state
     
     @staticmethod
+    async def realtime_context_generate(state: MessageState):
+        prompts = load_prompts(state["bot_config"])
+        prompt = PromptTemplate.from_template(prompts["realtime_context_generator_prompt"]).format(context=state["message_flow"])
+        await state["realtime_client"].create_audio_response(prompt)
+        state["sent_response"] = True
+        return state
+    
+    @staticmethod
+    async def realtime_generate(state: MessageState):
+        prompts = load_prompts(state["bot_config"])
+        prompt = PromptTemplate.from_template(prompts["realtime_generator_prompt"]).format(context=state["message_flow"])
+        await state["realtime_client"].create_audio_response(prompt)
+        state["sent_response"] = True
+        return state
+    
+    @staticmethod
     def stream_context_generate(state: MessageState):
         llm = ChatOpenAI(model=MODEL["model_type_or_path"], timeout=30000)
         # get the input message

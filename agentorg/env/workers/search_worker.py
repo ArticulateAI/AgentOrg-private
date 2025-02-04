@@ -38,3 +38,6 @@ class SearchWorker(BaseWorker):
         graph = self.action_graph.compile()
         result = graph.invoke(msg_state)
         return result
+    
+    async def aexecute(self, msg_state: MessageState):
+        raise NotImplementedError

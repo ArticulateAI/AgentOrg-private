@@ -1,3 +1,4 @@
+import asyncio
 import json
 import time
 from typing import Any, Dict
@@ -16,6 +17,11 @@ import langsmith as ls
 from openai import OpenAI
 from litellm import completion
 
+from langchain.prompts import PromptTemplate
+
+
+from agentorg.env.prompts import load_prompts
+from agentorg.openai_realtime.client import RealtimeClient
 from agentorg.orchestrator.task_graph import TaskGraph
 from agentorg.env.tools.utils import ToolGenerator
 from agentorg.orchestrator.NLU.nlu import SlotFilling
@@ -33,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 class AgentOrg:
-    def __init__(self, config, env: Env, **kwargs):
+    def __init__(self, config, env: Env, realtime_client: RealtimeClient= None, **kwargs):
         if isinstance(config, dict):
             self.product_kwargs = config
         else:
@@ -42,8 +48,12 @@ class AgentOrg:
         self.worker_prefix = "assistant"
         self.environment_prefix = "tool"
         self.__eos_token = "\n"
-        self.task_graph = TaskGraph("taskgraph", self.product_kwargs)
+        self.task_graph = TaskGraph("taskgraph", self.product_kwargs, realtime_client)
         self.env = env
+        self.realtime_client = realtime_client
+        self.params = {
+            'metadata': {},
+        }
 
     def generate_next_step(
         self, messages: List[Dict[str, Any]]
@@ -158,7 +168,9 @@ class AgentOrg:
             version=self.product_kwargs.get("version", "default"),
             language=self.product_kwargs.get("language", "EN"),
             bot_type=self.product_kwargs.get("bot_type", "presalebot"),
-            available_workers=self.product_kwargs.get("workers", [])
+            available_workers=self.product_kwargs.get("workers", []),
+            milvus_collection_name=self.product_kwargs.get("collection_name", ""),
+            realtime_api_prompt=""
         )
         message_state = MessageState(
             sys_instruct=sys_instruct, 
@@ -170,7 +182,8 @@ class AgentOrg:
             slots=params.get("dialog_states"),
             metadata=params.get("metadata"),
             is_stream=True if stream_type is not None else False,
-            message_queue=message_queue
+            message_queue=message_queue,
+            is_realtime=False
         )
         
         response_state, params = self.env.step(node_info["id"], message_state, params)
@@ -261,3 +274,68 @@ class AgentOrg:
             )
 
         return output
+
+    async def get_realtime_response(self):
+        logger.info("Starting realtime chat")
+        bot_config = BotConfig(
+            bot_id=self.product_kwargs.get("bot_id", "default"),
+            version=self.product_kwargs.get("version", "default"),
+            language=self.product_kwargs.get("language", "EN"),
+            bot_type=self.product_kwargs.get("bot_type", "presalebot"),
+            available_workers=self.product_kwargs.get("workers", []),
+            realtime_api_prompt=self.product_kwargs.get("realtime_api_prompt", ""),
+            milvus_collection_name=self.product_kwargs["collection_name"]
+        )
+        message_state = MessageState(
+            bot_config=bot_config,
+            is_realtime=True,
+            is_stream=False,
+            metadata=self.params.get("metadata"),
+            realtime_client=self.realtime_client,
+            trajectory=[],
+            sent_response=False,
+            change_context=False,
+        )
+        try:
+            logger.info("Starting realtime chat")
+            start_msg = self.product_kwargs["start_message"]
+            prompt = PromptTemplate.from_template(load_prompts(bot_config)["realtime_start_prompt"])
+            self.realtime_client.prompt = prompt.format(start_msg=start_msg)
+            self.realtime_client.set_audio_modality()
+            await self.realtime_client.update_session()
+            await self.realtime_client.create_response()
+            logger.info("Waiting for start message playback")
+            await asyncio.sleep(3)
+            response_cnt = 1
+            while True:
+                message_state["sent_response"] = False
+                message_state["change_context"] = False
+                message_state["message_flow"] = ""
+                logger.info(f"Realtime round: {response_cnt}")
+                node_info, self.params = await self.task_graph.get_node_realtime(self.params)
+
+                node_status = self.params.get("node_status", {})
+                self.params["node_status"] = node_status
+
+                orchestrator_message = OrchestratorMessage(message=node_info["attribute"]["value"], attribute=node_info["attribute"])
+                message_state["orchestrator_message"] = orchestrator_message
+
+                response_state, self.params = await self.env.realtime_step(node_info["name"], message_state, self.params)
+                logger.info(f"response_state={response_state=}")
+
+                self.params["change_context"] = response_state["change_context"]
+                if response_state["change_context"]:
+                    logger.info("Change context detected. Continuing...")
+                    self.params["change_context"] = True
+                    continue
+
+                if not response_state["sent_response"]:
+                    logger.info("sent_response is False. Generating audio response")
+                    response_state = await ToolGenerator.realtime_context_generate(response_state)
+                    message_state["sent_response"] = True
+
+                logger.info("Sleeping to allow for audio response generation")
+                await asyncio.sleep(3)
+                response_cnt += 1
+        except Exception as e:
+            logger.exception(f"Error in realtime chat: {e}")
