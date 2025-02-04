@@ -1,6 +1,8 @@
 
 
-def load_prompts(bot_config):
+from agentorg.utils.graph_state import BotConfig
+
+def load_prompts(bot_config: BotConfig):
         if bot_config.language == "EN":
                 ### ================================== Generator Prompts ================================== ###
                 prompts = {
@@ -79,6 +81,34 @@ Conversation:
 The response must be the name of one of the workers ({workers_name}).
 Answer:
 """,
+
+"realtime_retrieve_contextualize_q_prompt": """You are an assistant that has access to a retrieval tool.
+It has company's unstructured internal documentation and can be used to find relevant information needed to respond to the user's request.
+Based on the conversation history and last response from the user decide a query that can be understood without the context of the conversation.
+Output the response in JSON format. Example:{{'query': 'product details of XYZ'}}
+Only respond in JSON format DO NOT REPLY IN TEXT.""",
+
+"choose_worker_prompt_realtime": """
+You are an assistant that has access to the following set of tools. Here are the names and descriptions for each tool:\n
+{workers_info}
+Based on the conversation history and current task, choose the appropriate tool to respond to the user's message.
+Task:
+{task}
+Output the response in JSON format. Example: {{'tool': '{ex_worker}'}}
+""",
+
+"realtime_start_prompt": "Instructions:\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n\nPersonality:\n- Talk in an australian accent\n- Be upbeat and genuine\n\nRespond with the following message to start the conversation:\n{start_msg}",
+
+"realtime_question_answered_prompt": """Analyze the conversation so far to check if the user has answered the following question:\n"{sample_utterance}"\nOutput the response in the following JSON format:\n{{'answered': true}}\nOnly respond in JSON format and the key must be "answered". DO NOT REPLY IN TEXT!.""",
+# "realtime_use_retreiver_prompt": "You are an assistant that has access to a retrieval tool. It has company's internal documentation and can be used to find relevant information needed to respond to the user's request.\nBased on the conversation history decide whether to use the tool or not.\nReturn false if the user's input is a greeting or answers to a previous question.\nOutput the response in the following example JSON format:\n{{\n'use_retriever': true,\n'query': 'product details of XYZ'\n}}\n Only respond in JSON format DO NOT REPLY IN TEXT.",
+
+"realtime_message_flow_generator_prompt": "Instructions:\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n- You are responsible for helping user, answering users' questions. If the user's question is unclear or hasn't been fully expressed, do not provide an answer instead ask the user for clarification.\n- Refer to the following pieces of initial response to answer the users question. Do not mention 'initial response' in your response, since it is only visible to you.\n Initial Response:{initial_response}\n- In addition to replying to the user, also embed the following message if it doesn't conflict with the original response: {message}\n\n" + bot_config.realtime_api_prompt,
+"realtime_message_generator_prompt": "Instructions:\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n- You are responsible for helping user, answering users' questions. If the user's question is unclear or hasn't been fully expressed, do not provide an answer instead ask the user for clarification.\n- In addition to replying to the user, also embed the following message if it doesn't conflict with the original response: {message}\n\n" + bot_config.realtime_api_prompt,
+"realtime_question_node_type_prompt": "In addition to replying to the user, also ask the following question if it doesn't conflict with the original response: {value} [Notice: only ask this question and ignore previously asked questions]",
+"realtime_direct_node_type_prompt": bot_config.realtime_api_prompt + "\n\nRespond with the following message: {message}",
+
+"realtime_context_generator_prompt": "Instructions:\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n- You are responsible for helping user, answering users' questions.\n- Refer to information provided to help the user\n- If the user's question is unclear or hasn't been fully expressed, do not provide an answer instead ask the user for clarification.\n\n" + bot_config.realtime_api_prompt + "\n\nInformation:\n{context}\n\n",
+"realtime_generator_prompt": "Instructions:\n- Please make sure to respond with a helpful voice via audio\n- Be kind, helpful, and curteous\n- You are responsible for helping user, answering users' questions.\nIf the user's question is unclear or hasn't been fully expressed, do not provide an answer instead ask the user for clarification.\n\n" + bot_config.realtime_api_prompt,
 
 
 ### ================================== Database-related Prompts ================================== ###

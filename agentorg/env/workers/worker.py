@@ -21,3 +21,7 @@ class BaseWorker(ABC):
     @abstractmethod
     def execute(self, msg_state: MessageState):
         pass
+
+    @abstractmethod
+    async def aexecute(self, msg_state: MessageState):
+        pass

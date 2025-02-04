@@ -23,6 +23,13 @@ class RagMsgWorker(BaseWorker):
         super().__init__()
         self.action_graph = self._create_action_graph()
         self.llm = ChatOpenAI(model=MODEL["model_type_or_path"], timeout=30000)
+
+    def choose_rag_worker(self, state: MessageState):
+        if state["is_realtime"]:
+            logger.info("Using Realtime RAG Worker")
+            return "realtime_rag_worker"
+        logger.info("Using RAG Worker")
+        return "rag_worker"
      
     def _create_action_graph(self):
         workflow = StateGraph(MessageState)
@@ -30,13 +37,23 @@ class RagMsgWorker(BaseWorker):
         rag_wkr = MilvusRAGWorker(stream_response=False)
         msg_wkr = MessageWorker()
         workflow.add_node("rag_worker", rag_wkr.execute)
+        workflow.add_node("realtime_rag_worker", rag_wkr.aexecute)
         workflow.add_node("message_worker", msg_wkr.execute)
+        workflow.add_node("realtime_message_worker", msg_wkr.aexecute)
         # Add edges
-        workflow.add_edge(START, "rag_worker")
+        # workflow.add_edge(START, "rag_worker")
+        # workflow.add_edge("rag_worker", "message_worker")
+        workflow.add_conditional_edges(START, self.choose_rag_worker)
         workflow.add_edge("rag_worker", "message_worker")
+        workflow.add_edge("realtime_rag_worker", "realtime_message_worker")
         return workflow
 
     def execute(self, msg_state: MessageState):
         graph = self.action_graph.compile()
         result = graph.invoke(msg_state)
+        return result
+    
+    async def aexecute(self, msg_state: MessageState):
+        graph = self.action_graph.compile()
+        result = await graph.ainvoke(msg_state)
         return result

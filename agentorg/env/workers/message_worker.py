@@ -59,7 +59,9 @@ class MessageWorker(BaseWorker):
         return state
     
     def choose_generator(self, state: MessageState):
-        if state["is_stream"]:
+        if state["is_realtime"]:
+            return "realtime_generator"
+        elif state["is_stream"]:
             return "stream_generator"
         return "generator"
     
@@ -96,12 +98,41 @@ class MessageWorker(BaseWorker):
         state["message_flow"] = ""
         state["response"] = answer
         return state
+    
+    async def realtime_generator(self, state: MessageState):
+        orchestrator_message = state['orchestrator_message']
+        message_flow = state.get('response', "") + "\n" + state.get("message_flow", "")
+
+        # get the orchestrator message content
+        orch_msg_content = orchestrator_message.message
+        orch_msg_attr = orchestrator_message.attribute
+        direct_response = orch_msg_attr.get('direct_response', False)
+        prompts = load_prompts(state["bot_config"])
+        if direct_response:
+            state["message_flow"] = ""
+            prompt = PromptTemplate.from_template(prompts["realtime_direct_node_type_prompt"])
+            input_prompt = prompt.format(message=orch_msg_content)
+            await state["realtime_client"].create_audio_response(input_prompt)
+            state["sent_response"] = True
+            return state
+        
+        if message_flow and message_flow != "\n":
+            prompt = PromptTemplate.from_template(prompts["realtime_message_flow_generator_prompt"])
+            input_prompt = prompt.format(message=orch_msg_content, initial_response=message_flow)
+        else:
+            prompt = PromptTemplate.from_template(prompts["realtime_message_generator_prompt"])
+            input_prompt = prompt.format(message=orch_msg_content)
+
+        await state["realtime_client"].create_audio_response(input_prompt)
+        state["sent_response"] = True
+        return state
 
     def _create_action_graph(self):
         workflow = StateGraph(MessageState)
         # Add nodes for each worker
         workflow.add_node("generator", self.generator)
         workflow.add_node("stream_generator", self.stream_generator)
+        workflow.add_node("realtime_generator", self.realtime_generator)
         # Add edges
         # workflow.add_edge(START, "generator")
         workflow.add_conditional_edges(START, self.choose_generator)
@@ -110,4 +141,9 @@ class MessageWorker(BaseWorker):
     def execute(self, msg_state: MessageState):
         graph = self.action_graph.compile()
         result = graph.invoke(msg_state)
+        return result
+
+    async def aexecute(self, msg_state: MessageState):
+        graph = self.action_graph.compile()
+        result = await graph.ainvoke(msg_state)
         return result

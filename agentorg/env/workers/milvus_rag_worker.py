@@ -1,5 +1,4 @@
 import logging
-import os
 
 from langgraph.graph import StateGraph, START
 from langchain_openai import ChatOpenAI
@@ -31,21 +30,37 @@ class MilvusRAGWorker(BaseWorker):
     def choose_tool_generator(self, state: MessageState):
         if self.stream_response and state["is_stream"]:
             return "stream_tool_generator"
+        elif self.stream_response and state["is_realtime"]:
+            return "realtime_tool_generator"
         return "tool_generator"
+    
+    def choose_retriever(self, state: MessageState):
+        if state["is_realtime"]:
+            return "realtime_retriever"
+        return "retriever"
 
     def _create_action_graph(self):
         workflow = StateGraph(MessageState)
         # Add nodes for each worker
         workflow.add_node("retriever", RetrieveEngine.milvus_retrieve)
+        workflow.add_node("realtime_retriever", RetrieveEngine.realtime_milvus_retrieve)
         workflow.add_node("tool_generator", ToolGenerator.context_generate)
         workflow.add_node("stream_tool_generator", ToolGenerator.stream_context_generate)
+        workflow.add_node("realtime_tool_generator", ToolGenerator.realtime_context_generate)
         # Add edges
-        workflow.add_edge(START, "retriever")
+        workflow.add_conditional_edges(START, self.choose_retriever)
         workflow.add_conditional_edges(
             "retriever", self.choose_tool_generator)
+        workflow.add_conditional_edges(
+            "realtime_retriever", self.choose_tool_generator)
         return workflow
 
     def execute(self, msg_state: MessageState):
         graph = self.action_graph.compile()
         result = graph.invoke(msg_state)
+        return result
+    
+    async def aexecute(self, msg_state):
+        graph = self.action_graph.compile()
+        result = await graph.ainvoke(msg_state)
         return result
