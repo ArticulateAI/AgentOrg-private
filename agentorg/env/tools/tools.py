@@ -35,6 +35,7 @@ class Tool:
         self.info = self.get_info(slots)
         self.slots = self._format_slots(slots)
         self.isComplete = isComplete
+        self.fixed_args = {}
 
     def _format_slots(self, slots):
         format_slots = []
@@ -143,4 +144,22 @@ class Tool:
 
     def __repr__(self):
         return f"{self.__class__.__name__}"
+    
+    def to_openai_tool_def(self) -> dict:
+        parameters = {
+            "type": "object",
+            "properties": {},
+            "required": [slot.name for slot in self.slots if slot.required]
+        }
+        for slot in self.slots:
+            parameters["properties"][slot.name] = {
+                "type": slot.type,
+                "description": slot.description
+            }
+        return {
+            "type": "function",
+            "name": self.name,
+            "description": self.description,
+            "parameters": parameters
+        }
     
